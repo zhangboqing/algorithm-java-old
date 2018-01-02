@@ -1,4 +1,4 @@
-package com.zbq.sort;
+package com.zbq.sort.base;
 
 import java.util.List;
 

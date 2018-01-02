@@ -1,9 +1,11 @@
 package com.zbq.sort.base;
 
-import com.zbq.sort.SortAlgorithm;
+import com.zbq.sort.On2.InsectionSortAlgorithm;
+import com.zbq.sort.On2.SelectionSortAlgorithm;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -107,17 +109,21 @@ public class CommonUtils {
         long startTime = System.currentTimeMillis();
         sortAlgorithm.sort(arr);
         long endTime = System.currentTimeMillis();
-        System.out.println(sortAlgorithm.getSortName() + ": " + (endTime - startTime) / 1000.0 + "s");
+        System.out.println(sortAlgorithm.getSortName() + ": " + (endTime - startTime)  + "ms");
         System.out.println(arr);
     }
 
     public static void main(String[] args) {
-//        List<Integer> integers = generateIntRandomArray(10, 0, 5);
-//        System.out.println(integers);
-//        SelectionSortAlgorithm selectionSortAlgorithm = new SelectionSortAlgorithm();
-//        testSortTime(integers, selectionSortAlgorithm);
+        SelectionSortAlgorithm selectionSortAlgorithm = new SelectionSortAlgorithm();
+        InsectionSortAlgorithm insectionSortAlgorithm = new InsectionSortAlgorithm();
 
-        List<Integer> arr = generateNearlyOrderedIntArray(10, 5);
-        System.out.println(arr);
+        List<Integer> arr = generateIntRandomArray(10, 0, 5);
+        Integer[] tempArr = new Integer[arr.size()];
+        System.arraycopy(arr.toArray(),0,tempArr,0,arr.size());
+        List<Integer> arr2 = Arrays.asList(tempArr);
+
+        testSortTime(arr, selectionSortAlgorithm);
+        testSortTime(arr2, insectionSortAlgorithm);
+
     }
 }

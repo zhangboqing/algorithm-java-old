@@ -1,6 +1,7 @@
-package com.zbq.sort;
+package com.zbq.sort.On2;
 
 import com.zbq.sort.base.CommonUtils;
+import com.zbq.sort.base.SortAlgorithm;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class SelectionSortAlgorithm extends SortAlgorithm {
         }
 
         int n = arr.size();
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n - 1; i++) {
             //选择出最小的值
             int minIndex = i;
             for (int j = i + 1; j < n; j++) {
@@ -54,7 +55,7 @@ public class SelectionSortAlgorithm extends SortAlgorithm {
 
     public static void main(String[] args) {
 
-        List<Integer> arr = CommonUtils.generateIntRandomArray(10, 10, 20);
+        List<Integer> arr = CommonUtils.generateIntRandomArray(3, 10, 20);
 
         System.out.println(arr);
 
