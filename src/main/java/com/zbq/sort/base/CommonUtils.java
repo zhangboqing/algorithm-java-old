@@ -1,11 +1,8 @@
 package com.zbq.sort.base;
 
-import com.zbq.sort.On2.InsectionSortAlgorithm;
-import com.zbq.sort.On2.SelectionSortAlgorithm;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -30,6 +27,35 @@ public class CommonUtils {
         System.out.println("t1=" + t1);
         System.out.println("t2=" + t2);
     }
+
+
+    /**
+     * 交换数组中的两个值
+     * @param arr
+     * @param i
+     * @param j
+     * @param <T>
+     */
+    public static <T> void swap(List<T> arr,Integer i,Integer j) {
+        T temp = arr.get(i);
+        arr.set(i,arr.get(j));
+        arr.set(j,temp);
+    }
+
+
+    /**
+     * copy数组
+     * @param arr
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> copyArray(List<T> arr) {
+
+        ArrayList<T> newArr = new ArrayList<>();
+        newArr.addAll(arr);
+        return newArr;
+    }
+
 
 
     /**
@@ -58,7 +84,7 @@ public class CommonUtils {
             return false;
         }
 
-        for (int i = 0; i < arr.size(); i++) {
+        for (int i = 0; i < arr.size() - 1; i++) {
             if (arr.get(i).compareTo(arr.get(i + 1)) > 0) {
                 return false;
             }
@@ -105,7 +131,7 @@ public class CommonUtils {
      * @param <T>
      */
     public static <T extends Comparable> void testSortTime(List<T> arr, SortAlgorithm sortAlgorithm) {
-
+        System.out.println(arr);
         long startTime = System.currentTimeMillis();
         sortAlgorithm.sort(arr);
         long endTime = System.currentTimeMillis();
@@ -113,17 +139,68 @@ public class CommonUtils {
         System.out.println(arr);
     }
 
+    /**
+     * 随机获取值
+     * @param left
+     * @param right
+     * @return
+     */
+    public static Integer getRandomValue(Integer left,Integer right) {
+
+        Random random = new Random();
+        return random.nextInt(right-left+1) + left;
+    }
+
+    /**
+     * 计算数据的逆序对数量
+     * @param arr
+     * @param <T>
+     * @return
+     */
+    public static <T extends Comparable> Integer countInversion(List<T> arr) {
+        Integer count = 0 ;
+
+        if (CollectionUtils.isEmpty(arr)) {
+            return count;
+        }
+        int size = arr.size();
+        for (int i = 1; i < size ; i++) {
+            for (int j = i-1; j >= 0 ; j--) {
+                if (arr.get(i).compareTo(arr.get(j)) < 0) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
     public static void main(String[] args) {
-        SelectionSortAlgorithm selectionSortAlgorithm = new SelectionSortAlgorithm();
-        InsectionSortAlgorithm insectionSortAlgorithm = new InsectionSortAlgorithm();
+//        SelectionSortAlgorithm selectionSortAlgorithm = new SelectionSortAlgorithm();
+//        InsectionSortAlgorithm insectionSortAlgorithm = new InsectionSortAlgorithm();
+//
+        List<Integer> arr = generateIntRandomArray(15, 0, 1000000000);
+//        Integer[] tempArr = new Integer[arr.size()];
+//        System.arraycopy(arr.toArray(),0,tempArr,0,arr.size());
+//        List<Integer> arr2 = Arrays.asList(tempArr);
+//
+//        testSortTime(arr, selectionSortAlgorithm);
+//        testSortTime(arr2, insectionSortAlgorithm);
 
-        List<Integer> arr = generateIntRandomArray(10, 0, 5);
-        Integer[] tempArr = new Integer[arr.size()];
-        System.arraycopy(arr.toArray(),0,tempArr,0,arr.size());
-        List<Integer> arr2 = Arrays.asList(tempArr);
 
-        testSortTime(arr, selectionSortAlgorithm);
-        testSortTime(arr2, insectionSortAlgorithm);
+//        ArrayList<Integer> arr = new ArrayList<>();
+//        arr.add(1);
+//        arr.add(2);
+//        System.out.println(arr);
+////        swap(arr,0,1);
+//        List<Integer> newArr = copyArray(arr);
+//        System.out.println(newArr);
+//        Assert.isTrue(1==2,"1");
+
+//        System.out.println(getRandomValue(0,1));
+        System.out.println(arr);
+        Integer countInversion = countInversion(arr);
+        System.out.println(countInversion);
 
     }
 }

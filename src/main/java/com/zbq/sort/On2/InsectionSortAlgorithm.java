@@ -57,6 +57,27 @@ public class InsectionSortAlgorithm extends SortAlgorithm {
 
     }
 
+
+    public static <T extends Comparable> void insectionSort(List<T> arr,Integer left,Integer right) {
+        if (CollectionUtils.isEmpty(arr)) {
+            return;
+        }
+
+        for (int i = left; i < right-1; i++) {
+            //写法三
+            T temp = arr.get(i+1);
+            // j保存元素e应该插入的位置
+            int j;
+            for (j = i + 1; j > 0 && arr.get(j-1).compareTo(temp) > 0; j--) {
+                arr.set(j,arr.get(j-1));
+            }
+
+            arr.set(j,temp);
+        }
+
+
+    }
+
     @Override
     public <T extends Comparable> void sort(List<T> arr) {
         InsectionSortAlgorithm.insectionSort(arr);
@@ -67,7 +88,7 @@ public class InsectionSortAlgorithm extends SortAlgorithm {
 
         List<Integer> integers = CommonUtils.generateIntRandomArray(10, 1, 20);
         System.out.println(integers);
-        insectionSort(integers);
+        insectionSort(integers,0,integers.size());
         System.out.println(integers);
 
     }
