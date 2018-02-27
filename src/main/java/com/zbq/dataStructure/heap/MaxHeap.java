@@ -1,4 +1,4 @@
-package com.zbq.dataStructure;
+package com.zbq.dataStructure.heap;
 
 import com.zbq.sort.base.CommonUtils;
 import org.springframework.util.Assert;

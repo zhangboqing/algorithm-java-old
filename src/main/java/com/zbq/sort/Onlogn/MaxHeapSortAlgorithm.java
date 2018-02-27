@@ -1,7 +1,7 @@
 package com.zbq.sort.Onlogn;
 
-import com.zbq.dataStructure.IndexMaxHeap;
-import com.zbq.dataStructure.MaxHeap;
+import com.zbq.dataStructure.heap.IndexMaxHeap;
+import com.zbq.dataStructure.heap.MaxHeap;
 import com.zbq.sort.base.CommonUtils;
 import com.zbq.sort.base.SortAlgorithm;
 
