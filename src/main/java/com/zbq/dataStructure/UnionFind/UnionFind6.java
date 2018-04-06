@@ -1,14 +1,18 @@
 package com.zbq.dataStructure.UnionFind;
 
-// 我们的第四版Union-Find
-public class UnionFind4 implements UF {
+// 我们的第六版Union-Find, 路径压缩使用递归实现
+public class UnionFind6 implements UF {
 
-    private int[] rank;   // rank[i]表示以i为根的集合所表示的树的层数
+    // rank[i]表示以i为根的集合所表示的树的层数
+    // 在后续的代码中, 我们并不会维护rank的语意, 也就是rank的值在路径压缩的过程中, 有可能不在是树的层数值
+    // 这也是我们的rank不叫height或者depth的原因, 他只是作为比较的一个标准
+    // 关于这个问题，可以参考问答区：http://coding.imooc.com/learn/questiondetail/7287.html
+    private int[] rank;
     private int[] parent; // parent[i]表示第i个元素所指向的父节点
     private int count;    // 数据个数
 
     // 构造函数
-    public UnionFind4(int count){
+    public UnionFind6(int count){
         rank = new int[count];
         parent = new int[count];
         this.count = count;
@@ -23,11 +27,11 @@ public class UnionFind4 implements UF {
     // O(h)复杂度, h为树的高度
     private int find(int p){
         assert( p >= 0 && p < count );
-        // 不断去查询自己的父亲节点, 直到到达根节点
-        // 根节点的特点: parent[p] == p
-        while( p != parent[p] )
-            p = parent[p];
-        return p;
+
+        // path compression 2, 递归算法
+        if( p != parent[p] )
+            parent[p] = find( parent[p] );
+        return parent[p];
     }
 
     // 查看元素p和元素q是否所属一个集合
@@ -46,8 +50,8 @@ public class UnionFind4 implements UF {
         if( pRoot == qRoot )
             return;
 
-        // 根据两个元素所在树的层数不同判断合并方向
-        // 将层数少的集合合并到层数多的集合上
+        // 根据两个元素所在树的元素个数不同判断合并方向
+        // 将元素个数少的集合合并到元素个数多的集合上
         if( rank[pRoot] < rank[qRoot] ){
             parent[pRoot] = qRoot;
         }
