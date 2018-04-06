@@ -7,6 +7,7 @@ package com.zbq.sort.test;
 public class TestTwo {
 
 
+    /** 1.选择排序 */
     public static void selectSort(int[] arr) {
         int length = arr.length;
 
@@ -28,6 +29,7 @@ public class TestTwo {
         }
     }
 
+    /** 2.插入排序 */
     public static void insectionSort(int[] arr) {
 
         int length = arr.length;
@@ -50,6 +52,7 @@ public class TestTwo {
         }
     }
 
+    /** 3.冒泡排序 */
     public static void bubbleSort(int[] arr) {
         int length = arr.length;
 
@@ -64,6 +67,7 @@ public class TestTwo {
         }
     }
 
+    /** 4.归并排序 */
     public static void mergeSort(int[] arr, int start, int end) {
 
 
@@ -118,36 +122,44 @@ public class TestTwo {
     }
 
 
-    public static void process(int[] array, int l, int middle, int r) {
+    /** 5.希尔排序*/
+    public static void shellSort(int[] arr,int start,int end,int stepLength) {
 
-
-        int length = r - l + 1;
-        int[] copyArray = new int[length];
-        for (int i = 0; i < length; i++) {
-            copyArray[i] = array[l + i];
+        if (stepLength < 1) {
+            return;
         }
-        int j = 0;
-        int k = middle - l + 1;
-        for (int m = 0; m < length; m++) {
-            if (j > middle - l) {
-                array[l + m] = copyArray[k];
-                k++;
-            } else if (k > r - l) {
-                array[l + m] = copyArray[j];
-                j++;
-            } else if (copyArray[j] > copyArray[k]) {
-                array[l + m] = copyArray[k];
-                k++;
-            } else if(copyArray[j] <= copyArray[k]){
-                array[l + m] = copyArray[j];
-                j++;
+        int length = arr.length;
+
+        //插入排序
+        insectionSortByStepLength(arr,stepLength);
+        //递归调用
+        shellSort(arr,start,end,stepLength/2);
+    }
+
+    private static void insectionSortByStepLength(int[] arr, int stepLength) {
+        int length = arr.length;
+
+        for (int i = 0; i < stepLength; i++) {
+            int indexFlag;
+            int indexValue;
+            for (int j = i + stepLength; j < length; j = j + stepLength) {
+                indexFlag = j;
+                indexValue = arr[j];
+                for (int k = j - stepLength; k >= i ; k = k -stepLength) {
+                    if (arr[k] > indexValue) {
+                        indexFlag = k;
+                        arr[k+stepLength] = arr[k];
+                    }
+                }
+
+                if (indexFlag < j) {
+                    arr[indexFlag] = indexValue;
+                }
             }
-
-
         }
-
 
     }
+
 
 
     public static void main(String[] args) {
@@ -155,7 +167,7 @@ public class TestTwo {
 
         int[] arr = {4, 3, 5, 8, 1, 7, 9, 3};
 
-        mergeSort(arr, 0, arr.length - 1);
+        shellSort(arr, 0, arr.length - 1,arr.length/2);
 
         for (int i : arr) {
             System.out.println(i);
