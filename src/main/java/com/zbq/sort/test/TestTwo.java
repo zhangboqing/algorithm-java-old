@@ -1,5 +1,7 @@
 package com.zbq.sort.test;
 
+import java.util.Random;
+
 /**
  * @author zhangboqing
  * @date 2018/3/6
@@ -7,7 +9,9 @@ package com.zbq.sort.test;
 public class TestTwo {
 
 
-    /** 1.选择排序 */
+    /**
+     * 1.选择排序
+     */
     public static void selectSort(int[] arr) {
         int length = arr.length;
 
@@ -29,7 +33,9 @@ public class TestTwo {
         }
     }
 
-    /** 2.插入排序 */
+    /**
+     * 2.插入排序
+     */
     public static void insectionSort(int[] arr) {
 
         int length = arr.length;
@@ -52,7 +58,9 @@ public class TestTwo {
         }
     }
 
-    /** 3.冒泡排序 */
+    /**
+     * 3.冒泡排序
+     */
     public static void bubbleSort(int[] arr) {
         int length = arr.length;
 
@@ -67,7 +75,9 @@ public class TestTwo {
         }
     }
 
-    /** 4.归并排序 */
+    /**
+     * 4.归并排序
+     */
     public static void mergeSort(int[] arr, int start, int end) {
 
 
@@ -86,7 +96,7 @@ public class TestTwo {
 
     private static void mergeProcess(int[] arr, int start, int middle, int end) {
 
-        int[] tempArr = new int[end-start+1];
+        int[] tempArr = new int[end - start + 1];
 
         int i = start;
         int j = middle + 1;
@@ -122,8 +132,10 @@ public class TestTwo {
     }
 
 
-    /** 5.希尔排序*/
-    public static void shellSort(int[] arr,int start,int end,int stepLength) {
+    /**
+     * 5.希尔排序
+     */
+    public static void shellSort(int[] arr, int start, int end, int stepLength) {
 
         if (stepLength < 1) {
             return;
@@ -131,9 +143,9 @@ public class TestTwo {
         int length = arr.length;
 
         //插入排序
-        insectionSortByStepLength(arr,stepLength);
+        insectionSortByStepLength(arr, stepLength);
         //递归调用
-        shellSort(arr,start,end,stepLength/2);
+        shellSort(arr, start, end, stepLength / 2);
     }
 
     private static void insectionSortByStepLength(int[] arr, int stepLength) {
@@ -145,10 +157,10 @@ public class TestTwo {
             for (int j = i + stepLength; j < length; j = j + stepLength) {
                 indexFlag = j;
                 indexValue = arr[j];
-                for (int k = j - stepLength; k >= i ; k = k -stepLength) {
+                for (int k = j - stepLength; k >= i; k = k - stepLength) {
                     if (arr[k] > indexValue) {
                         indexFlag = k;
-                        arr[k+stepLength] = arr[k];
+                        arr[k + stepLength] = arr[k];
                     }
                 }
 
@@ -160,14 +172,176 @@ public class TestTwo {
 
     }
 
+    /**
+     * 6.随机快排
+     */
+    public static void randomQuickSort(int[] arr, int start, int end) {
 
+        if (start >= end) {
+            return;
+        }
+
+        int partFlag = partition(arr, start, end);
+
+        randomQuickSort(arr, start, partFlag - 1);
+        randomQuickSort(arr, partFlag + 1, end);
+    }
+
+    private static int partition(int[] arr, int start, int end) {
+        //获取随机值
+        int flagIndex = start + new Random().nextInt(end - start + 1);
+        int flagValue = arr[flagIndex];
+
+        if (flagIndex != start) {
+            arr[flagIndex] = arr[start];
+            arr[start] = flagValue;
+        }
+
+        int flagL = start;
+        for (int i = start + 1; i <= end; i++) {
+            if (arr[i] <= flagValue) {
+                int temp = arr[i];
+                arr[i] = arr[flagL + 1];
+                arr[flagL + 1] = temp;
+                flagL++;
+            }
+        }
+
+        if (flagL > start) {
+            int temp = arr[flagL];
+            arr[flagL] = arr[start];
+            arr[start] = temp;
+        }
+
+        return flagL;
+    }
+
+
+    /**
+     * 双路快排
+     */
+    public static void RandomQuickSortFor2Way(int[] arr, int start, int end) {
+
+        if (start >= end) {
+            return;
+        }
+
+        int flagIndex = partition2(arr, start, end);
+        RandomQuickSortFor2Way(arr, start, flagIndex - 1);
+        RandomQuickSortFor2Way(arr, flagIndex + 1, end);
+    }
+
+    private static int partition2(int[] arr, int start, int end) {
+
+        int randomIndex = start + new Random().nextInt(end - start + 1);
+        int randomValue = arr[randomIndex];
+        if (randomIndex > start) {
+            int temp = arr[start];
+            arr[start] = arr[randomIndex];
+            arr[randomIndex] = temp;
+        }
+
+        int flagL = start;
+        int flagR = end + 1;
+
+        int stopFlag = 2;
+        int changeFlag = 0;
+
+        while ( flagL+1<= end && flagL+1 < flagR  ) {
+
+            if (stopFlag == 2) {
+                if (arr[flagL + 1] < randomValue) {
+                    flagL++;
+
+                } else {
+                    stopFlag = 1;
+                    changeFlag++;
+                }
+            }
+
+
+            if (stopFlag == 1) {
+                if (arr[flagR - 1] > randomValue) {
+                    flagR--;
+                } else {
+                    stopFlag = 2;
+                    changeFlag++;
+                }
+            }
+
+            if (changeFlag == 2) {
+
+                int temp = arr[flagL + 1];
+                arr[flagL + 1] = arr[flagR - 1];
+                arr[flagR - 1] = temp;
+
+                flagL++;
+                flagR--;
+                changeFlag = 0;
+            }
+
+        }
+
+        if (flagL!= start) {
+            int temp = arr[flagL];
+            arr[flagL] = arr[start];
+            arr[start] = temp;
+        }
+
+        return flagL;
+    }
+
+
+    /**  */
+    public static void RandomQuickSortFor3Way(int[] arr, int start, int end) {
+        if (start >= end) {
+            return;
+        }
+
+
+        int length = arr.length;
+        swap(arr,start,start + new Random().nextInt(end-start+1));
+
+        int compValue =  arr[start];
+        int i = start + 1;
+        int flagL = start;
+        int flagR = end + 1;
+
+        for (; i < flagR; i++) {
+            if ((arr[i] < compValue) && (i == flagL+1)) {
+                flagL++;
+            } else if ((arr[i] < compValue) && i > flagL + 1 ) {
+                swap(arr,i,flagL+1);
+                flagL++;
+            } else if ((arr[i] > compValue) && i == flagR -1) {
+                flagR--;
+            } else if ((arr[i] > compValue) && i < flagR -1) {
+                swap(arr,i,flagR-1);
+                flagR--;
+                i--;
+            }
+        }
+
+        if (start < flagL) {
+            swap(arr,start,flagL);
+        }
+
+        RandomQuickSortFor3Way(arr,start,flagL-1);
+        RandomQuickSortFor3Way(arr,flagR,end);
+    }
+
+    public static void swap(int[] arr,int l,int r) {
+        int temp = arr[l];
+        arr[l]  = arr[r];
+        arr[r] = temp;
+    }
 
     public static void main(String[] args) {
 
 
         int[] arr = {4, 3, 5, 8, 1, 7, 9, 3};
 
-        shellSort(arr, 0, arr.length - 1,arr.length/2);
+        RandomQuickSortFor3Way(arr, 0, arr.length - 1);
 
         for (int i : arr) {
             System.out.println(i);
